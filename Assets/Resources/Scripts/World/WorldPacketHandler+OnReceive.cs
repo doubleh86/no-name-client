@@ -35,8 +35,8 @@ namespace Resources.Scripts.World
             
             var list = packet.GameObjects.FindAll(x => x.Type == GameObjectType.Player);
             var list2 = packet.GameObjects.FindAll(x => x.Type == GameObjectType.Monster);
-            UnityEngine.Debug.Log($"Spawn Monster {list2.Count} | Spawn Type : {packet.IsSpawn}");
-            UnityEngine.Debug.Log($"Spawn Player {list.Count} | Spawn Type : {packet.IsSpawn}");
+            Debug.Log($"Spawn Monster {list2.Count} | Spawn Type : {packet.IsSpawn}");
+            Debug.Log($"Spawn Player {list.Count} | Spawn Type : {packet.IsSpawn}");
 
         }
     }
