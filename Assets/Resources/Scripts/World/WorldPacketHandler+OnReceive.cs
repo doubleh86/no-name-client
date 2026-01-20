@@ -10,7 +10,7 @@ namespace Resources.Scripts.World
 
             foreach (var monster in packet.Monsters)
             {
-                UnityEngine.Debug.Log($"Monster Update : {monster.Id}|Position : {monster.Position}|{monster.State}");
+                Debug.Log($"Monster Update : {monster.Id}|Position : {monster.Position}|{monster.State}");
             }
             // Console.WriteLine($"Monster Update : {packet.Monsters.Count}");
         }
@@ -18,7 +18,7 @@ namespace Resources.Scripts.World
         private void _OnItemUseCommand(byte[] data)
         {
             var packet = MemoryPackHelper.Deserialize<UseItemCommand>(data);
-            UnityEngine.Debug.Log($"Item Use {packet.ItemId}");
+            Debug.Log($"Item Use {packet.ItemId}");
         }
 
         private void _OnSpawnGameObject(byte[] data)
