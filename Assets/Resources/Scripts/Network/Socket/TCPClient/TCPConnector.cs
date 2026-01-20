@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net;
 using System.Net.Sockets;
-using System.Threading;
 using System.Threading.Tasks;
 
 public class TCPConnector : IDisposable
@@ -100,5 +99,6 @@ public class TCPConnector : IDisposable
     public void Dispose()
     {
         _socket?.Dispose();
+        _connectCompletionSource.TrySetCanceled();
     }
 }
