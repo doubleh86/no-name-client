@@ -67,7 +67,6 @@ public partial class TCPSessionV2
 
 		try
 		{
-			_pingTryCount += 1;
 			_SendPing();
 		}
 		catch (Exception e)
