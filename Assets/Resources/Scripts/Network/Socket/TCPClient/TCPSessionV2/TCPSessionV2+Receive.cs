@@ -64,6 +64,13 @@ public partial class TCPSessionV2
             {
                 var bodySize = BitConverter.ToInt32(_receiveBuffer, readOffset);
                 var key = BitConverter.ToInt32(_receiveBuffer, readOffset + sizeof(int));
+                
+                if (bodySize <= 0 || bodySize > TCPCommon.MaxReceivePacketSize)
+                {
+                    UnityEngine.Debug.Log($"Invalid body size: {bodySize}");
+                    Disconnect(SessionCloseReason.ReceiveProtocolError);
+                    return;
+                }
 
                 if (_receiveWriteOffset - readOffset < bodySize + NetworkPackage.HeaderSize)
                 {
@@ -76,7 +83,12 @@ public partial class TCPSessionV2
                     Key = key
                 };
                 
-                networkPackage.SetData(_receiveBuffer, readOffset + NetworkPackage.HeaderSize, networkPackage.BodySize);
+                if (networkPackage.SetData(_receiveBuffer, readOffset + NetworkPackage.HeaderSize, networkPackage.BodySize) == false)
+                {
+                    Disconnect(SessionCloseReason.ReceiveProtocolError);
+                    return;
+                }
+                
                 _PushReceiveQueue(networkPackage);
                 readOffset += networkPackage.BodySize + NetworkPackage.HeaderSize;
             }

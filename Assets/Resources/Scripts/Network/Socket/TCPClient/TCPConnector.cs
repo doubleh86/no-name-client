@@ -8,8 +8,8 @@ public class TCPConnector : IDisposable
 {
     public delegate void ConnectHandler(ITCPSession session);
         
-    private System.Net.Sockets.Socket _socket;
-    private readonly ManualResetEventSlim _connectEvent = new(false);
+    private Socket _socket;
+    private TaskCompletionSource<bool> _connectCompletionSource = new(TaskCreationOptions.RunContinuationsAsynchronously);
 
     public ConnectHandler ConnectionCompleteHandler;
         
@@ -27,23 +27,44 @@ public class TCPConnector : IDisposable
             }
         }
 
+        _connectCompletionSource = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
         _socket = new Socket(address.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
         var tcpSession = new TCPSessionV2(_socket);
         tcpSession.Identifier = accountId;
 
         _socket.BeginConnect(ip, port, ConnectComplete, tcpSession);
-        _connectEvent.Wait();
+        if (timeout <= 0)
+        {
+            return await _connectCompletionSource.Task.ConfigureAwait(false);
+        }
+        
+        var completeTask = await Task.WhenAny(_connectCompletionSource.Task, Task.Delay(timeout))
+                                     .ConfigureAwait(false);
 
-        return true;
+        if (completeTask != _connectCompletionSource.Task)
+        {
+            try
+            {
+                _socket?.Close();
+            }
+            catch (Exception e)
+            {
+                // ignored
+            }
+
+            return false;
+        }
+        
+        return await _connectCompletionSource.Task.ConfigureAwait(false);
+            
     }
 
     private void ConnectComplete(IAsyncResult ar)
     {
-        _connectEvent.Set();
-            
         var tcpSession = ar.AsyncState as ITCPSession;
         if (tcpSession == null)
         {
+            _connectCompletionSource.TrySetResult(false);
             return;
         }
  
@@ -54,29 +75,30 @@ public class TCPConnector : IDisposable
             {
                 throw new Exception("Socket is not connected");
             }
-                
-            if (ConnectionCompleteHandler != null)
-            {
-                ConnectionCompleteHandler(tcpSession);
-            }
+            
+            ConnectionCompleteHandler?.Invoke(tcpSession);
+            _connectCompletionSource.TrySetResult(true);
         }
         catch (SocketException e)
         {
             Console.WriteLine($"[ConnectComplete][{e.ErrorCode}][{e.Message}]");
             tcpSession.Disconnect(SessionCloseReason.ServerShutdown);
             tcpSession.Dispose();
+            
+            _connectCompletionSource.TrySetResult(false);
         }
         catch (Exception e)
         {
             Console.WriteLine($"[ConnectComplete][{e.Message}]");
             tcpSession.Disconnect(SessionCloseReason.Unknown);
             tcpSession.Dispose();
+            
+            _connectCompletionSource.TrySetResult(false);
         }
     }
 
     public void Dispose()
     {
         _socket?.Dispose();
-        _connectEvent?.Dispose();
     }
 }

@@ -11,19 +11,20 @@ public class NetworkPackage
     public int Key { get; set; }
     public byte[] Body { get; set; }
 
-    public void SetData(byte[] data, int startIndex, int size)
+    public bool SetData(byte[] data, int startIndex, int size)
     {
-        if (size >= TCPCommon.MaxReceivePacketSize)
-            return;
-
+        if (size > TCPCommon.MaxReceivePacketSize)
+        {
+            return false;
+        }
+        
         if (size <= 0)
         {
-            UnityEngine.Debug.LogError("size <= 0");
-            // Console.WriteLine("size <= 0");
-            return;
+            return false;
         }
 
         Body = new byte[size];
         Array.Copy(data, startIndex, Body, 0, size);
+        return true;
     }
 }
