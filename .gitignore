@@ -1,0 +1,58 @@
+# =========================
+# Unity generated
+# =========================
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]ser[Ss]ettings/
+[Mm]emoryCaptures/
+[Rr]ecordings/
+
+# Unity cache (newer versions)
+[Nn]onStreamingAssets/
+
+# Crashlytics / analytics (optional)
+crashlytics-build.properties
+
+# =========================
+# Visual Studio / Rider
+# =========================
+.vs/
+.idea/
+*.csproj
+*.sln
+*.suo
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+
+# Rider plugin
+*.DotSettings.user
+
+# =========================
+# Unity Asset Store tools / meta
+# =========================
+# Keep .meta files tracked!
+# Do NOT ignore *.meta
+
+# =========================
+# OS junk
+# =========================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# =========================
+# Addressables / Cache (optional)
+# =========================
+ServerData/
+AddressableAssetsData/*/AssetBundleCache/
