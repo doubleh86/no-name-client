@@ -23,7 +23,7 @@ public class MoveSender : MonoBehaviour
     
     private void _SendMoveCommand(NetworkSession client, float rotation)
     {
-        if(client == null) 
+        if(client == null || client.IsConnected() == false) 
             return;
         
         client.SendGameCommand(new GameCommandRequest

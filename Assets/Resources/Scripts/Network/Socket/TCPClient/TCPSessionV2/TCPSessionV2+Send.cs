@@ -12,7 +12,7 @@ public partial class TCPSessionV2
     private bool _isSending = false;
     private int _sendFailCount = 0;
 
-    private bool _sendAsync = false;
+    private readonly bool _sendAsync = false;
 
     private void _SendMemberClear()
     {

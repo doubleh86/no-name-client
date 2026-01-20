@@ -1,18 +1,19 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Resources.Scripts.World
 {
     public partial class WorldPacketHandler
     {
+        public EnemyManager EnemyManager;
         private void _OnMonsterUpdateCommand(byte[] data)
         {
             var packet = MemoryPackHelper.Deserialize<MonsterUpdateCommand>(data);
 
             foreach (var monster in packet.Monsters)
             {
-                Debug.Log($"Monster Update : {monster.Id}|Position : {monster.Position}|{monster.State}");
+                EnemyManager.Move(monster.Id, new Vector3(monster.Position.X, monster.Position.Y, monster.Position.Z), 0);
             }
-            // Console.WriteLine($"Monster Update : {packet.Monsters.Count}");
         }
 
         private void _OnItemUseCommand(byte[] data)
@@ -28,17 +29,30 @@ namespace Resources.Scripts.World
                 return;
 
             if (packet.IsSpawn == false)
+            {
+                _DespawnObject(packet.GameObjects);
                 return;
-
-            if (packet.GameObjects == null)
-                return;
+            }
             
-            // Spawn Object
-            // var list = packet.GameObjects.FindAll(x => x.Type == GameObjectType.Player);
-            // var list2 = packet.GameObjects.FindAll(x => x.Type == GameObjectType.Monster);
-            // Debug.Log($"Spawn Monster {list2.Count} | Spawn Type : {packet.IsSpawn}");
-            // Debug.Log($"Spawn Player {list.Count} | Spawn Type : {packet.IsSpawn}");
+            foreach (var obj in packet.GameObjects)
+            {
+                if (obj.Type == GameObjectType.Monster)
+                {
+                    var pos = new Vector3(obj.Position.X, obj.Position.Y, obj.Position.Y);
+                    EnemyManager.Spawn(obj.Id, pos, 0f);
+                }
+            }
+        }
 
+        private void _DespawnObject(List<GameObjectBase> despawnObjects)
+        {
+            foreach (var obj in despawnObjects)
+            {
+                if (obj.Type == GameObjectType.Monster)
+                {
+                    EnemyManager.Despawn(obj.Id);
+                }
+            }
         }
     }
 }

@@ -5,7 +5,6 @@ namespace Resources.Scripts.Network
     public class NetworkSession : ITCPClient, IDisposable
     {
         private TCPNetworkWrapper _tcpNetwork;
-        public bool IsConnected => _tcpNetwork.GetTcpSession().IsConnected();
         
         public TCPNetworkWrapper GetTcpNetwork() => _tcpNetwork;
     
@@ -13,6 +12,18 @@ namespace Resources.Scripts.Network
         {
             _tcpNetwork = new TCPNetworkWrapper(ip, port, 0, networkHandler);
             _tcpNetwork.ConnectServer();
+        }
+
+        public bool IsConnected()
+        {
+            if(_tcpNetwork == null) 
+                return false;
+            
+            var session = _tcpNetwork.GetTcpSession();
+            if (session == null)
+                return false;
+            
+            return _tcpNetwork.GetTcpSession().IsConnected();
         }
     
         public void SendGameCommand(GameCommandRequest command)

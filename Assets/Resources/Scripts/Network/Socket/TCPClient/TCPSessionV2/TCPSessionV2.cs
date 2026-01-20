@@ -14,7 +14,7 @@ public partial class TCPSessionV2 : ITCPSession
     private ITCPSession.SessionState _state = ITCPSession.SessionState.None;
     private readonly object _disconnectLock = new();
 
-    private CancellationTokenSource? _sessionCts;
+    private CancellationTokenSource _sessionCts;
     private readonly ConcurrentQueue<byte[]> _packetQueue = new();
         
     public System.Net.Sockets.Socket GetSocket() => _socket;

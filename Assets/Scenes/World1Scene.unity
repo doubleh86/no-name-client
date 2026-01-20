@@ -119,6 +119,51 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &68335608
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 68335610}
+  - component: {fileID: 68335609}
+  m_Layer: 0
+  m_Name: EnemyManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &68335609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 68335608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec00284a65d57429e91be75550630381, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyManager
+  EnemyPrefab: {fileID: 9083305330271119242, guid: eb8fa5e6789fe44dd9e5bd6116e8c69e, type: 3}
+--- !u!4 &68335610
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 68335608}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 200.28284, y: 1.198, z: 200.28285}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &432820975
 GameObject:
   m_ObjectHideFlags: 0
@@ -301,6 +346,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0462bdac97eb4174a1914f521db383c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Resources.Scripts.World.WorldNetworkHandler
+  EnemyManager: {fileID: 68335609}
 --- !u!4 &491754709
 Transform:
   m_ObjectHideFlags: 0
@@ -792,3 +838,4 @@ SceneRoots:
   - {fileID: 1478076930}
   - {fileID: 1149719877}
   - {fileID: 491754709}
+  - {fileID: 68335610}
