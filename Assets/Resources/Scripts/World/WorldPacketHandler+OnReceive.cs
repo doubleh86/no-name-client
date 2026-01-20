@@ -33,10 +33,11 @@ namespace Resources.Scripts.World
             if (packet.GameObjects == null)
                 return;
             
-            var list = packet.GameObjects.FindAll(x => x.Type == GameObjectType.Player);
-            var list2 = packet.GameObjects.FindAll(x => x.Type == GameObjectType.Monster);
-            Debug.Log($"Spawn Monster {list2.Count} | Spawn Type : {packet.IsSpawn}");
-            Debug.Log($"Spawn Player {list.Count} | Spawn Type : {packet.IsSpawn}");
+            // Spawn Object
+            // var list = packet.GameObjects.FindAll(x => x.Type == GameObjectType.Player);
+            // var list2 = packet.GameObjects.FindAll(x => x.Type == GameObjectType.Monster);
+            // Debug.Log($"Spawn Monster {list2.Count} | Spawn Type : {packet.IsSpawn}");
+            // Debug.Log($"Spawn Player {list.Count} | Spawn Type : {packet.IsSpawn}");
 
         }
     }
